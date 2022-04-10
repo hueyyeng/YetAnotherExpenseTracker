@@ -1,0 +1,5 @@
+gunicorn==20.1.0
+whitenoise==6.0.0
+Django==4.0.3
+djangorestframework==3.13.1
+django-money==2.1.1
