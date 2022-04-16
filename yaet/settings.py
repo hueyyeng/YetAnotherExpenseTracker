@@ -17,10 +17,14 @@ DEBUG = bool(int(has_debug)) if has_debug else False
 print(f"{DEBUG=}")
 
 ALLOWED_HOSTS = [
-    "127.0.0.1",
     ".herokuapp.com",
     ".pythonanywhere.com",
 ]
+if DEBUG:
+    ALLOWED_HOSTS += [
+        "localhost",
+        "127.0.0.1",
+    ]
 
 
 # Application definition

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="d-flex flex-column p-2">
+  <h1 class="title">Expenses</h1>
+  <p>Something something expenses</p>
+  <table id="expenseTable"></table>
+  <p>Uh oh you have no transactions yet for this month!</p>
+
+</div>
+
+{% endblock %}
+
+{% block footer %}
+<script>
+let table = new Tabulator('#expenseTable', {
+  height: 500,
+  layout: 'fitColumns',
+  columns:[
+    {
+      title: 'Name',
+      field: 'name',
+    },
+    {
+      title: 'Description',
+      field: 'description',
+    },
+    {
+      title: 'Amount',
+      field: 'amount',
+    },
+    {
+      title: 'Currency',
+      field: 'amount_currency',
+    },
+    {
+      title: 'Type',
+      field: 'type_id',
+    },
+ 	],
+});
+
+const url = `${document.location.protocol}//${document.location.host}/tracker/api/expense/`;
+fetch(url)
+  .then(
+    response => response.json()
+  )
+  .then(
+    data => table.setData(data)
+  );
+
+</script>
+{% endblock %}
