@@ -2,9 +2,11 @@
 
 Yet Another Expense Tracker is yet another expense tracker built with Django to fulfill my specific use case.
 
-It is also for trying out Heroku free tier to see if I need to host it on my own server...
+It is also for trying out Heroku free tier to see if I need to host it on my own server... (and I cannot get it to work for now)
 
 Obviously there is many other frameworks and languages that I can explore but I'm already knee deep in Django which is more than enough for to quickly create this expense tracker app.
+
+Favicon from [Icons8](https://icons8.com/).
 
 ## Getting Started
 
@@ -12,18 +14,16 @@ This project uses both Docker and Docker Compose. Refer to https://docs.docker.c
 
 Last tested in WSL2 Ubuntu 20.04. Should work with Docker for Desktop on Windows and macOS but no guarantee. 
 
-## Build
+## Docker Compose
+
+### Build
 
 ```shell
 # Make sure you're at project root path containing both Dockerfile and docker-compose.yml
 $ docker-compose build
 ```
 
-## Troubleshooting
-
-1. Use `sudo chown -R $USER:$USER .` at the root project folder when extending new Django app as any files created in Docker are owned by `root` user by default.
-
-## Deployment
+### Running
 
 ```shell
 # Running in detached mode 
@@ -32,3 +32,14 @@ $ docker-compose up -d
 # Tail and follow the log from the last 100 lines
 $ docker-compose logs -f --tail 100
 ```
+
+## Deployment
+
+### PythonAnywhere
+
+Coming soon.
+
+## Troubleshooting
+
+1. Use `sudo chown -R $USER:$USER .` at the root project folder when extending new Django app as any files created in Docker are owned by `root` user by default.
+
