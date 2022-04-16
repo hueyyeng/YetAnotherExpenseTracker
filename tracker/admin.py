@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 from datetime import datetime
 
 from django.contrib import admin
-from django.contrib.admin import SimpleListFilter
+from django.contrib.admin import DateFieldListFilter, SimpleListFilter
 from django.utils.translation import gettext_lazy as _
 
 from tracker.models import Expense, ExpenseType
@@ -75,6 +75,11 @@ class ExpenseTypeAdmin(admin.ModelAdmin):
         "description",
     )
 
+    search_fields = (
+        "name",
+        "description",
+    )
+
 
 @admin.register(Expense)
 class ExpenseAdmin(admin.ModelAdmin):
@@ -99,6 +104,16 @@ class ExpenseAdmin(admin.ModelAdmin):
     )
 
     list_filter = (
+        ("transaction_dt", DateFieldListFilter),
         TransactionYearFilter,
         TransactionMonthFilter,
     )
+
+    search_fields = (
+        "name",
+        "description",
+        "amount",
+    )
+
+    date_hierarchy = "transaction_dt"
+
