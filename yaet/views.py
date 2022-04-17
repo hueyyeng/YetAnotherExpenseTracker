@@ -2,7 +2,6 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import AnonymousUser
-from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.views import View
 
@@ -15,6 +14,7 @@ class LoginView(View):
 
         form = AuthenticationForm()
         context = {
+            "user": user,
             "login_form": form,
         }
         return render(
@@ -24,21 +24,18 @@ class LoginView(View):
         )
 
     def post(self, request):
-        form = AuthenticationForm(request, data=request.POST)
-        context = {
-            "login_form": form,
-        }
-        if not form.is_valid():
-            return render(
-                request,
-                "login.html",
-                context=context,
-            )
-
-        username = form.cleaned_data.get('username')
-        password = form.cleaned_data.get('password')
+        username = request.POST.get('username')
+        password = request.POST.get('password')
         user = authenticate(username=username, password=password)
+        context = {
+            "user": user,
+        }
         if not user:
+            context.update(
+                {
+                    "error": "Invalid username or password",
+                }
+            )
             return render(
                 request,
                 "login.html",
@@ -53,7 +50,7 @@ class LoginView(View):
 class LogoutView(View):
     def get(self, request):
         logout(request)
-        return HttpResponse("You Are Already Logout Desu!")
+        return redirect("login")
 
 
 def home_page(request):

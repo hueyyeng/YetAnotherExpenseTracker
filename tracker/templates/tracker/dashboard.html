@@ -6,8 +6,6 @@
   <h1 class="title">Expenses</h1>
   <p>Something something expenses</p>
   <table id="expenseTable"></table>
-  <p>Uh oh you have no transactions yet for this month!</p>
-
 </div>
 
 {% endblock %}
@@ -36,7 +34,7 @@ let table = new Tabulator('#expenseTable', {
     },
     {
       title: 'Type',
-      field: 'type_id',
+      field: 'type',
     },
  	],
 });

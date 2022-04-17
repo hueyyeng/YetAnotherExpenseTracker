@@ -2,14 +2,32 @@
 
 {% block content %}
 
-<div class="container">
-  <h1>Login</h1>
-  <form method="POST">
-    {% csrf_token %}
-    {{ login_form }}
-    <button class="btn btn-primary" type="submit">Login</button>
-  </form>
-  <p class="text-center">Don't have an account? <a href="/register">Create an account</a>.</p>
+<div class="d-flex h-75 justify-content-center align-items-center">
+  <div class="row min-vw-100 justify-content-center">
+    <div class="col col-md-6 col-xl-3">
+      <h2 class="text-center">Login</h2>
+      {% if error %}
+        <div class="alert alert-danger text-center">
+          {{ error }}
+        </div>
+      {% endif %}
+      <form action="" method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="username" class="form-label">Username</label>
+          <input type="text" name="username" class="form-control" id="username" required>
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" name="password" class="form-control" id="password" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+      <div class="mt-4">
+        <p class="text-center">Don't have an account? <a href="/register">Create an account</a>.</p>
+      </div>
+    </div>
+  </div>
 </div>
 
 {% endblock %}

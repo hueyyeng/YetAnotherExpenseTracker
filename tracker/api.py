@@ -1,5 +1,6 @@
 import datetime
 
+from django.db.models import F
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -12,7 +13,9 @@ class ExpenseAPI(APIView):
         current_month = datetime.datetime.now().month
         expenses = Expense.objects.filter(
             transaction_dt__month=current_month,
-        ).values()
+        ).values().annotate(
+            type=F("type__name"),
+        )
 
         return Response(
             expenses,
