@@ -2,20 +2,115 @@
 
 {% block content %}
 
+<div id="addExpenseModal" class="modal" tabindex="-1">
+  <div class="modal-dialog modal-xl modal-fullscreen-lg-down modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Expenses</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="d-flex flex-row my-auto mb-2 gap-2 align-items-center">
+          <div class="flex-grow-1">
+            <button type="button" id="addExpenseRow" class="btn btn-primary">Add Row</button>
+            <button type="button" id="removeSelectedExpenseRow" class="btn btn-danger">Remove Selected Row</button>
+          </div>
+          <div>
+            <label for="currencySelect">Currency:</label>
+            <select name="currency" id="currencySelect"></select>
+          </div>
+          <div>
+            <label for="typeSelect">Type:</label>
+            <select name="type" id="typeSelect"></select>
+          </div>
+        </div>
+        <div id="addExpenseTable"></div>
+      </div>
+      <div class="modal-footer">
+        <button id="addExpenseTableSubmit" type="button" class="btn btn-primary">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="d-flex flex-column p-2">
   <h1 class="title">Expenses</h1>
-  <p>Something something expenses</p>
-  <table id="expenseTable"></table>
+  <div class="d-flex flex-row py-3 gap-2">
+    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addExpenseModal">
+      Add
+    </button>
+    <button type="button" class="btn btn-outline-danger">
+      Remove
+    </button>
+    <input type="text" id="searchExpense" class="form-control" placeholder="Search expenses">
+  </div>
+  <div id="expenseTable"></div>
 </div>
 
 {% endblock %}
 
 {% block footer %}
 <script>
+let addTable = new Tabulator('#addExpenseTable', {
+  height: 500,
+  layout: 'fitColumns',
+  columns: [
+    {
+      formatter:"rowSelection",
+      titleFormatter:"rowSelection",
+      headerHozAlign :"center",
+      hozAlign:"center",
+      headerSort: false,
+      width: 5,
+      cellClick: function(e, cell) {
+        cell.getRow().toggleSelect();
+      }
+    },
+    {
+      title: 'Name',
+      field: 'name',
+      editor: true,
+    },
+    {
+      title: 'Description',
+      field: 'description',
+      editor: true,
+    },
+    {
+      title: 'Currency',
+      field: 'amount_currency',
+      editor: "list",
+      editorParams: {
+        values: {
+          "myr": "MYR",
+          "usd": "USD",
+          "jpy": "JPY",
+          "sgd": "SGD",
+        }
+      }
+    },
+    {
+      title: 'Amount',
+      field: 'amount',
+      editor: true,
+    },
+    {
+      title: 'Type',
+      field: 'type',
+      editor: true,
+    },
+    ],
+});
+
 let table = new Tabulator('#expenseTable', {
   height: 500,
   layout: 'fitColumns',
   columns:[
+    {
+      title: 'ID',
+      field: 'id',
+      width: 5,
+    },
     {
       title: 'Name',
       field: 'name',
@@ -47,6 +142,25 @@ fetch(url)
   .then(
     data => table.setData(data)
   );
+
+const addExpenseRowBtn = document.getElementById('addExpenseRow');
+addExpenseRowBtn.addEventListener('click', () => {
+  addTable.addRow();
+});
+
+const removeSelectedExpenseRowBtn = document.getElementById('removeSelectedExpenseRow');
+removeSelectedExpenseRowBtn.addEventListener('click', () => {
+  let selectedRows = addTable.getSelectedRows();
+  for (let i=0; i < selectedRows.length; i++) {
+    selectedRows[i].delete();
+  };
+});
+
+const aaddExpenseTableSubmitBtn = document.getElementById('addExpenseTableSubmit');
+aaddExpenseTableSubmitBtn.addEventListener('click', () => {
+  let expenseData = addTable.getData();
+  console.log(expenseData);
+});
 
 </script>
 {% endblock %}
