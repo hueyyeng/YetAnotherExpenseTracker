@@ -30,3 +30,13 @@ class Expense(NameDescriptionMixin, CreatedModifiedDtMixin):
     def __str__(self):
         transaction_date = self.transaction_dt.strftime("%Y-%m-%d")
         return f"{self.name} - {self.amount} ({transaction_date})"
+
+
+class ExpenseConfig(NameDescriptionMixin, CreatedModifiedDtMixin):
+    config = models.JSONField(
+        default=dict,
+    )
+
+    def __str__(self):
+        return f"{self.name}"
+

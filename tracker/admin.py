@@ -14,7 +14,7 @@ from django.contrib import admin
 from django.contrib.admin import DateFieldListFilter, SimpleListFilter
 from django.utils.translation import gettext_lazy as _
 
-from tracker.models import Expense, ExpenseType
+from tracker.models import Expense, ExpenseType, ExpenseConfig
 
 
 class TransactionYearFilter(SimpleListFilter):
@@ -117,3 +117,29 @@ class ExpenseAdmin(admin.ModelAdmin):
 
     date_hierarchy = "transaction_dt"
 
+
+@admin.register(ExpenseConfig)
+class ExpenseConfigAdmin(admin.ModelAdmin):
+    fields = (
+        "name",
+        "description",
+        "config",
+    )
+
+    readonly_fields = (
+        "created_dt",
+        "modified_dt",
+    )
+
+    list_display = (
+        "id",
+        "name",
+        "description",
+        "config",
+    )
+
+    search_fields = (
+        "name",
+        "description",
+        "config",
+    )
