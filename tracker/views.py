@@ -16,10 +16,18 @@ class DashboardView(LoginRequiredMixin, View):
         if isinstance(user, AnonymousUser):
             return redirect("dashboard")
 
-        current_month = datetime.datetime.now().month
+        year = request.GET.get("year"):
+        if not year:
+            year = datetime.datetime.now().year
+
+        month = request.GET.get("month"):
+        if not month:
+            month = datetime.datetime.now().month
+
         expenses = []
+        # TODO: Add the F expression to filter both month and year
         _expenses = Expense.objects.filter(
-            transaction_dt__month=current_month,
+            transaction_dt__month=month,
         )
         for expense in _expenses:
             expense: Expense
